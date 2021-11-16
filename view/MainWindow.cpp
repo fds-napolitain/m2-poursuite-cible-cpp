@@ -130,13 +130,14 @@ void MainWindow::openFolder() {
  */
 void MainWindow::runLoop() {
 	if (actionRun->isChecked()) {
-		QThread* thread = QThread::create([&thread, this] {
+		QThread* thread = QThread::create([this] {
 			QTimer timer = QTimer(this);
-			while (1) {
+			bool test = true;
+			while (test) {
 				if (!actionRun->isChecked()) {
-					thread->exit(0);
+					test = false;
 				}
-
+				image->next();
 				timer.start(16); // 60 FPS cap
 			}
 		});
