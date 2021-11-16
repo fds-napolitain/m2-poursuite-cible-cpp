@@ -30,13 +30,14 @@ private:
 	QAction* actionSSD;
 	QAction* actionOpticalFlow;
 	QWidget* widget;
-	QGroupBox* hdrbox;
+	QGroupBox* groupBox;
 	ImageStreamWidget* image;
 	void createActions();
 	void createMenus();
 private slots:
 	void openFiles();
 	void openFolder();
+	void runLoop();
 
 };
 

@@ -30,12 +30,13 @@ void ImageStreamWidget::loadImages(const QStringList& filenames) {
 	for (int i = 0; i < n; i++) {
 		images[i].loadImage(filenames[i]);
 	}
-	image->loadImage(images[0]);
+	next();
 }
 
 /**
  * Affiche l'image suivante et fait tourner l'algorithme défini.
  */
-void ImageStreamWidget::reload() {
-
+void ImageStreamWidget::next() {
+	image->loadImage(images[indice]);
+	(++indice) %= n;
 }

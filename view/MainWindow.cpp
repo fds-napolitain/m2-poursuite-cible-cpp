@@ -16,10 +16,10 @@ MainWindow::MainWindow() : QMainWindow() {
 	createActions();
 	createMenus();
 
-	hdrbox = new QGroupBox(widget);
-	hdrbox->setLayout(new QHBoxLayout);
-	image = new ImageStreamWidget(hdrbox);
-	hdrbox->layout()->addWidget(image->image->getQLabel());
+	groupBox = new QGroupBox(widget);
+	groupBox->setLayout(new QHBoxLayout);
+	image = new ImageStreamWidget(groupBox);
+	groupBox->layout()->addWidget(image->image->getQLabel());
 }
 
 /**
@@ -44,6 +44,7 @@ void MainWindow::createActions() {
 	actionRun->setStatusTip(tr("Run"));
 	actionRun->setCheckable(true);
 	actionRun->setChecked(false);
+	connect(actionRun, &QAction::triggered, this, &MainWindow::runLoop);
 
 	/*
 	 * algorithmes a choisir pour le tracking
@@ -120,4 +121,25 @@ void MainWindow::openFolder() {
 	}
 	image->loadImages(fileNames);
 	qDebug() << fileNames;
+}
+
+/**
+ * Slot action: lancer ou non le thread
+ * boucle infinie dans un thread
+ * timer permettant 60 FPS
+ */
+void MainWindow::runLoop() {
+	if (actionRun->isChecked()) {
+		QThread* thread = QThread::create([&thread, this] {
+			QTimer timer = QTimer(this);
+			while (1) {
+				if (!actionRun->isChecked()) {
+					thread->exit(0);
+				}
+
+				timer.start(16); // 60 FPS cap
+			}
+		});
+		thread->start();
+	}
 }
