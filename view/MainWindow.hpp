@@ -11,6 +11,7 @@
 #include <QtWidgets>
 #include <QString>
 #include "ImageStreamWidget.hpp"
+#include "WorkerThread.hpp"
 
 class MainWindow : public QMainWindow {
 
@@ -23,7 +24,8 @@ private:
 	QMenu* menuAlgorithms;
 	QAction* actionOpenFiles;
 	QAction* actionOpenFolder;
-	QAction* actionRun;
+	QAction* actionRunNext;
+	QAction* actionRunLoop;
 	QActionGroup* actionGroupAlgorithms;
 	QAction* actionPearson;
 	QAction* actionSAD;
@@ -32,12 +34,14 @@ private:
 	QWidget* widget;
 	QGroupBox* groupBox;
 	ImageStreamWidget* image;
+	WorkerThread* runner;
 	void createActions();
 	void createMenus();
+	void runNext();
 private slots:
 	void openFiles();
 	void openFolder();
-	void runLoop();
+	void runThread();
 
 };
 

@@ -39,12 +39,17 @@ void MainWindow::createActions() {
 	actionOpenFolder->setStatusTip(tr("Open a folder of images"));
 	connect(actionOpenFolder, &QAction::triggered, this, &MainWindow::openFolder);
 
-	actionRun = new QAction(tr("&Run"), this);
-	actionRun->setShortcut(QKeySequence(Qt::Key_Space));
-	actionRun->setStatusTip(tr("Run"));
-	actionRun->setCheckable(true);
-	actionRun->setChecked(false);
-	connect(actionRun, &QAction::triggered, this, &MainWindow::runLoop);
+	actionRunNext = new QAction(tr("&Run next"), this);
+	actionRunNext->setShortcut(QKeySequence(Qt::Key_Space));
+	actionRunNext->setStatusTip(tr("Run next"));
+	connect(actionRunNext, &QAction::triggered, this, &MainWindow::runNext);
+
+	actionRunLoop = new QAction(tr("&Run loop"), this);
+	actionRunLoop->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Space));
+	actionRunLoop->setStatusTip(tr("Run loop"));
+	actionRunLoop->setCheckable(true);
+	actionRunLoop->setChecked(false);
+	connect(actionRunLoop, &QAction::triggered, this, &MainWindow::runThread);
 
 	/*
 	 * algorithmes a choisir pour le tracking
@@ -84,7 +89,8 @@ void MainWindow::createMenus() {
 	menuFile = menuBar()->addMenu(tr("&File"));
 	menuFile->addAction(actionOpenFiles);
 	menuFile->addAction(actionOpenFolder);
-	menuFile->addAction(actionRun);
+	menuFile->addAction(actionRunNext);
+	menuFile->addAction(actionRunLoop);
 
 	menuAlgorithms = menuBar()->addMenu(tr("&Algorithms"));
 	menuAlgorithms->addAction(actionPearson);
@@ -124,23 +130,23 @@ void MainWindow::openFolder() {
 }
 
 /**
+ * Slot action: lance la prochaine frame et ses actions.
+ */
+void MainWindow::runNext() {
+	if (!actionRunLoop->isChecked()) {
+		image->next();
+	}
+}
+
+/**
  * Slot action: lancer ou non le thread
  * boucle infinie dans un thread
  * timer permettant 60 FPS
  */
-void MainWindow::runLoop() {
-	if (actionRun->isChecked()) {
-		QThread* thread = QThread::create([this] {
-			QTimer timer = QTimer(this);
-			bool test = true;
-			while (test) {
-				if (!actionRun->isChecked()) {
-					test = false;
-				}
-				image->next();
-				timer.start(16); // 60 FPS cap
-			}
-		});
-		thread->start();
+void MainWindow::runThread() {
+	if (actionRunLoop->isChecked()) {
+		runner = new WorkerThread;
+		//connect(runner, &WorkerThread::resultReady, this, &MainWindow::handleResults);
+		runner->start();
 	}
 }

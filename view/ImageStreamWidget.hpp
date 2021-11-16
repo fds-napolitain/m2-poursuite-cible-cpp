@@ -19,6 +19,7 @@ public:
 	std::vector<Image> images;
 	ImageStreamWidget();
 	explicit ImageStreamWidget(QWidget* parent);
+	~ImageStreamWidget() override;
 	void loadImages(const QStringList& filenames);
 	void next();
 };

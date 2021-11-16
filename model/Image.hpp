@@ -17,7 +17,9 @@ public:
 	~Image();
 	void loadImage(const QString& filename);
 	[[nodiscard]] QImage getQImage() const;
+	[[nodiscard]] static QImage getQImage(cv::Mat image) ;
 	// -- méthodes sur une image
+
 
 };
 

@@ -11,6 +11,7 @@ ImageStreamWidget::ImageStreamWidget() {
 	image = new ImageWidget(this);
 }
 
+
 /**
  * Constructeur avec un widget parent.
  * @param parent
@@ -18,6 +19,13 @@ ImageStreamWidget::ImageStreamWidget() {
 ImageStreamWidget::ImageStreamWidget(QWidget *parent) {
 	image = new ImageWidget(this);
 	setParent(parent);
+}
+
+/**
+ * Destructeur
+ */
+ImageStreamWidget::~ImageStreamWidget() {
+	delete image;
 }
 
 /**

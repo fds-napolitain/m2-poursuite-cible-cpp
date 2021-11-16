@@ -3,7 +3,6 @@
 //
 
 
-#include <utility>
 #include "Image.hpp"
 
 
@@ -37,5 +36,14 @@ void Image::loadImage(const QString& filename) {
  * @return
  */
 QImage Image::getQImage() const {
+	return QImage((uchar*) image.data, image.cols, image.rows, QImage::Format_RGB888).rgbSwapped();
+}
+
+/**
+ * Retourne une image au format QImage à partir du paramètre image
+ * @param image matrice OpenCV
+ * @return
+ */
+QImage Image::getQImage(cv::Mat image) {
 	return QImage((uchar*) image.data, image.cols, image.rows, QImage::Format_RGB888).rgbSwapped();
 }

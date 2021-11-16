@@ -16,7 +16,7 @@ find_package(Qt5 COMPONENTS
 find_package(OpenCV REQUIRED)
 
 
-add_executable(TargetTracking main.cpp view/MainWindow.cpp view/MainWindow.hpp view/ImageWidget.cpp view/ImageWidget.hpp model/Image.cpp model/Image.hpp view/ImageStreamWidget.cpp view/ImageStreamWidget.hpp)
+add_executable(TargetTracking main.cpp view/MainWindow.cpp view/MainWindow.hpp view/ImageWidget.cpp view/ImageWidget.hpp model/Image.cpp model/Image.hpp view/ImageStreamWidget.cpp view/ImageStreamWidget.hpp view/WorkerThread.cpp view/WorkerThread.hpp)
 target_link_libraries(TargetTracking
         Qt5::Core
         Qt5::Gui
