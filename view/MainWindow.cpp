@@ -26,6 +26,9 @@ MainWindow::MainWindow() : QMainWindow() {
  * Crée les actions
  */
 void MainWindow::createActions() {
+	/*
+	 * actions I/O et exécutables (facon film)
+	 */
 	actionOpenFiles = new QAction(tr("&Open Files"), this);
 	actionOpenFiles->setShortcut(QKeySequence(Qt::Key_O));
 	actionOpenFiles->setStatusTip(tr("Open a set of images"));
@@ -36,29 +39,34 @@ void MainWindow::createActions() {
 	actionOpenFolder->setStatusTip(tr("Open a folder of images"));
 	connect(actionOpenFolder, &QAction::triggered, this, &MainWindow::openFolder);
 
+	actionRun = new QAction(tr("&Run"), this);
+	actionRun->setShortcut(QKeySequence(Qt::Key_Space));
+	actionRun->setStatusTip(tr("Run"));
+	actionRun->setCheckable(true);
+	actionRun->setChecked(false);
+
+	/*
+	 * algorithmes a choisir pour le tracking
+	 */
 	actionPearson = new QAction(tr("&Track with Pearson correlation"), this);
 	actionPearson->setShortcut(QKeySequence(Qt::Key_A));
 	actionPearson->setStatusTip(tr("Track with Pearson correlation"));
 	actionPearson->setCheckable(true);
-	connect(actionPearson, &QAction::triggered, this, &MainWindow::correlatePearson);
 
 	actionSAD = new QAction(tr("&Track with SAD correlation"), this);
 	actionSAD->setShortcut(QKeySequence(Qt::Key_Z));
 	actionSAD->setStatusTip(tr("Track with SAD correlation"));
 	actionSAD->setCheckable(true);
-	connect(actionSAD, &QAction::triggered, this, &MainWindow::correlateSAD);
 
 	actionSSD = new QAction(tr("&Track with SSD correlation"), this);
 	actionSSD->setShortcut(QKeySequence(Qt::Key_E));
 	actionSSD->setStatusTip(tr("Track with SSD correlation"));
 	actionSSD->setCheckable(true);
-	connect(actionSSD, &QAction::triggered, this, &MainWindow::correlateSSD);
 
 	actionOpticalFlow = new QAction(tr("&Track with optical flow"), this);
 	actionOpticalFlow->setShortcut(QKeySequence(Qt::Key_R));
 	actionOpticalFlow->setStatusTip(tr("Track with optical flow"));
 	actionOpticalFlow->setCheckable(true);
-	connect(actionOpticalFlow, &QAction::triggered, this, &MainWindow::opticalFlow);
 
 	actionGroupAlgorithms = new QActionGroup(this);
 	actionGroupAlgorithms->setExclusive(true);
@@ -75,6 +83,7 @@ void MainWindow::createMenus() {
 	menuFile = menuBar()->addMenu(tr("&File"));
 	menuFile->addAction(actionOpenFiles);
 	menuFile->addAction(actionOpenFolder);
+	menuFile->addAction(actionRun);
 
 	menuAlgorithms = menuBar()->addMenu(tr("&Algorithms"));
 	menuAlgorithms->addAction(actionPearson);
@@ -87,7 +96,7 @@ void MainWindow::createMenus() {
  * Slot action: ouvrir une ou plusieurs images
  */
 void MainWindow::openFiles() {
-	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Images"), "../images/", tr("Image Files (*.png *.jpg *.JPG *.bmp)"));
+	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open Images"), "../sequences/", tr("Image Files (*.png *.jpg *.JPG *.bmp *.tiff)"));
 	if (fileNames.empty()) {
 		qDebug() << tr("Empty file list");
 		return;
@@ -100,8 +109,8 @@ void MainWindow::openFiles() {
  * Slot action: ouvrir un dossier d'images
  */
 void MainWindow::openFolder() {
-	QDir directory(QFileDialog::getExistingDirectory(this, tr("Open folder"), "../images/"));
-	QStringList fileNames = directory.entryList(QStringList() << tr("*.jpg") << tr("*.JPG"), QDir::Files);
+	QDir directory(QFileDialog::getExistingDirectory(this, tr("Open folder"), "../sequences/"));
+	QStringList fileNames = directory.entryList(QStringList() << tr("*.jpg") << tr("*.JPG") << tr("*.bmp") << tr("*.tiff") << tr("*.png"), QDir::Files);
 	for (QString& fileName: fileNames) {
 		fileName = directory.path().append(tr("/")).append(fileName);
 	}
@@ -111,32 +120,4 @@ void MainWindow::openFolder() {
 	}
 	image->loadImages(fileNames);
 	qDebug() << fileNames;
-}
-
-/**
- *
- */
-void MainWindow::correlatePearson() {
-
-}
-
-/**
- *
- */
-void MainWindow::correlateSAD() {
-
-}
-
-/**
- *
- */
-void MainWindow::correlateSSD() {
-
-}
-
-/**
- *
- */
-void MainWindow::opticalFlow() {
-
 }

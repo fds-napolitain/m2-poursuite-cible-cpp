@@ -13,11 +13,14 @@ class ImageStreamWidget : public QWidget {
 
 private:
 public:
-	std::vector<Image> images;
+	int i = 0;
+	int n;
 	ImageWidget* image;
+	std::vector<Image> images;
 	ImageStreamWidget();
 	explicit ImageStreamWidget(QWidget* parent);
 	void loadImages(const QStringList& filenames);
+	void reload();
 };
 
 

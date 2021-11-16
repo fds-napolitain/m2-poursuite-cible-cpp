@@ -23,6 +23,7 @@ private:
 	QMenu* menuAlgorithms;
 	QAction* actionOpenFiles;
 	QAction* actionOpenFolder;
+	QAction* actionRun;
 	QActionGroup* actionGroupAlgorithms;
 	QAction* actionPearson;
 	QAction* actionSAD;
@@ -36,10 +37,6 @@ private:
 private slots:
 	void openFiles();
 	void openFolder();
-	void correlatePearson();
-	void correlateSAD();
-	void correlateSSD();
-	void opticalFlow();
 
 };
 

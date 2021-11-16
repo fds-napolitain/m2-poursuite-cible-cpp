@@ -4,10 +4,17 @@
 
 #include "ImageStreamWidget.hpp"
 
+/**
+ * Constructeur par défaut
+ */
 ImageStreamWidget::ImageStreamWidget() {
 	image = new ImageWidget(this);
 }
 
+/**
+ * Constructeur avec un widget parent.
+ * @param parent
+ */
 ImageStreamWidget::ImageStreamWidget(QWidget *parent) {
 	image = new ImageWidget(this);
 	setParent(parent);
@@ -18,9 +25,17 @@ ImageStreamWidget::ImageStreamWidget(QWidget *parent) {
  * @param filenames
  */
 void ImageStreamWidget::loadImages(const QStringList& filenames) {
-	images.resize(filenames.size());
-	for (int i = 0; i < filenames.size(); i++) {
+	n = filenames.size();
+	images.resize(n);
+	for (int i = 0; i < n; i++) {
 		images[i].loadImage(filenames[i]);
 	}
 	image->loadImage(images[0]);
+}
+
+/**
+ * Affiche l'image suivante et fait tourner l'algorithme défini.
+ */
+void ImageStreamWidget::reload() {
+
 }
